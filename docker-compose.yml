@@ -1,0 +1,24 @@
+services:
+  greetings-app-dev:
+    build: .
+    image: rolandstech/python-greetings-app:latest
+    container_name: python-greetings-app-dev
+    ports:
+      - 7001:3000
+  greetings-app-stg:
+    build: . 
+    image: rolandstech/python-greetings-app:latest
+    container_name: python-greetings-app-stg
+    ports:
+      - 7002:3000
+  greetings-app-prd:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rolandstech/python-greetings-app:latest
+    container_name: python-greetings-app-prd
+    ports:
+      - 7003:3000
+
+# docker run --rm --name greetings-app-dev -p 7001:3000 rolandstech/greetings-app
+# docker build -t rolandstech/greetings-app .
