@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: rolandstech/python-greetings-app:latest
-    container_name: python-greetings-app-prd
+    container_name: python-greetings-app-prod
     ports:
       - 7003:3000
 
