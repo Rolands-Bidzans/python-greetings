@@ -52,7 +52,7 @@ def buildDockerImage(){
 } 
 
 def pullDockerImage() {
-    echo "Pushing image to docker registry.."
+    echo "Pulling image from docker registry.."
     bat "docker pull rolandstech/python-greetings-app"
 }
 
@@ -69,5 +69,5 @@ def runTests(String environment) {
     echo "API tests treiggered on ${environment} env..."
     String lowercaseEnv = environment.toLowerCase();
     pullDockerImage()
-    bat "docker run --rm -it --network host rolandstech/api-tests run greetings greetings_${lowercaseEnv}"
+    bat "docker run --rm --network host rolandstech/api-tests run greetings greetings_${lowercaseEnv}"
 }
