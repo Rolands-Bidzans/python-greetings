@@ -11,7 +11,7 @@ services:
     container_name: python-greetings-app-stg
     ports:
       - 7002:3000
-  greetings-app-prd:
+  greetings-app-prod:
     build:
       context: .
       dockerfile: Dockerfile
