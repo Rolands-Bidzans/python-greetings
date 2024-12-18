@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-    	string(name: dockerhubUserName, defaultValue: 'rolandstech', description: 'Dockerhub username')
+    	string(name: 'dockerhubUserName', defaultValue: 'rolandstech', description: 'Dockerhub username')
     }
     stages {
         stage('build-docker-image') {
