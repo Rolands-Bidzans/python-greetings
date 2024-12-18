@@ -47,17 +47,17 @@ def pushDockerImage() {
     bat "docker push ${params.dockerhubUserName}/python-greetings-app:latest"
 }
 
+def pullDockerImage() {
+    echo "Pulling image from docker registry.."
+    bat "docker pull ${params.dockerhubUserName}/python-greetings-app"
+}
+
 def buildDockerImage(){
     echo "Building docker image..."
     bat "docker build -t ${params.dockerhubUserName}/python-greetings-app:latest ."
     
     pushDockerImage()
 } 
-
-def pullDockerImage() {
-    echo "Pulling image from docker registry.."
-    bat "docker pull ${params.dockerhubUserName}/python-greetings-app"
-}
 
 def deploy(String environment) {
     echo "Deployement treiggered on ${environment} env.."
