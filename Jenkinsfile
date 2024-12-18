@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-    	string(name: 'dockerhubUserName', defaultValue: 'rolandstech', description: 'Dockerhub username')
+    	string(name: 'dockerhub_username', defaultValue: 'rolandstech', description: 'Dockerhub username')
     }
     stages {
         stage('build-docker-image') {
@@ -14,7 +14,7 @@ pipeline {
                 deploy("DEV")
             }
         }
-        stage('test-on-dev') {
+        stage('tests-on-dev') {
             steps {
                runTests("DEV")
             }
@@ -24,7 +24,7 @@ pipeline {
                 deploy("STG")
             }
         }
-        stage('test-on-stg') {
+        stage('tests-on-stg') {
             steps {
                 runTests("STG")
             }
@@ -34,7 +34,7 @@ pipeline {
                 deploy("PROD")
             }
         }
-        stage('test-on-prod') {
+        stage('tests-on-prod') {
             steps {
                 runTests("PROD")
             }
@@ -43,24 +43,24 @@ pipeline {
 }
 
 def pushDockerImage() {
-    echo "Pushing image to docker registry.."
-    bat "docker push ${params.dockerhubUserName}/python-greetings-app:latest"
+    // echo "Pushing image to docker registry.."
+    bat "docker push ${params.dockerhub_username}/python-greetings-app:latest"
 }
 
 def pullDockerImage() {
-    echo "Pulling image from docker registry.."
-    bat "docker pull ${params.dockerhubUserName}/python-greetings-app"
+    // echo "Pulling image from docker registry.."
+    bat "docker pull ${params.dockerhub_username}/python-greetings-app"
 }
 
 def buildDockerImage(){
     echo "Building docker image..."
-    bat "docker build -t ${params.dockerhubUserName}/python-greetings-app:latest ."
+    bat "docker build -t ${params.dockerhub_username}/python-greetings-app:latest ."
     
     pushDockerImage()
 } 
 
 def deploy(String environment) {
-    echo "Deployement treiggered on ${environment} env.."
+    echo "Deploying Python microservice to ${environment} environment.."
     String lowercaseEnv = environment.toLowerCase();
     pullDockerImage()
     bat "docker compose stop greetings-app-${lowercaseEnv}"
@@ -69,8 +69,8 @@ def deploy(String environment) {
 }
 
 def runTests(String environment) {
-    echo "API tests treiggered on ${environment} env..."
+    echo "Testing Python microservice in ${environment} environment.."
     String lowercaseEnv = environment.toLowerCase();
     pullDockerImage()
-    bat "docker run --rm --network host ${params.dockerhubUserName}/api-tests run greetings greetings_${lowercaseEnv}"
+    bat "docker run --network=host --rm ${params.dockerhub_username}/api-tests:latest run greetings greetings_${lowercaseEnv}"
 }
