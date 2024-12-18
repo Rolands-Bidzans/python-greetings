@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-    	dockerhubUserName 'rolandstech'
+    	string(name: dockerhubUserName, defaultValue: 'rolandstech', description: 'Dockerhub username')
     }
     stages {
         stage('build-docker-image') {
@@ -44,19 +44,19 @@ pipeline {
 
 def pushDockerImage() {
     echo "Pushing image to docker registry.."
-    bat "docker push $dockerhubUserName/python-greetings-app:latest"
+    bat "docker push ${params.dockerhubUserName}/python-greetings-app:latest"
 }
 
 def buildDockerImage(){
     echo "Building docker image..."
-    bat "docker build -t $dockerhubUserName/python-greetings-app:latest ."
+    bat "docker build -t ${params.dockerhubUserName}/python-greetings-app:latest ."
     
     pushDockerImage()
 } 
 
 def pullDockerImage() {
     echo "Pulling image from docker registry.."
-    bat "docker pull $dockerhubUserName/python-greetings-app"
+    bat "docker pull ${params.dockerhubUserName}/python-greetings-app"
 }
 
 def deploy(String environment) {
@@ -72,5 +72,5 @@ def runTests(String environment) {
     echo "API tests treiggered on ${environment} env..."
     String lowercaseEnv = environment.toLowerCase();
     pullDockerImage()
-    bat "docker run --rm --network host $dockerhubUserName/api-tests run greetings greetings_${lowercaseEnv}"
+    bat "docker run --rm --network host ${params.dockerhubUserName}/api-tests run greetings greetings_${lowercaseEnv}"
 }
