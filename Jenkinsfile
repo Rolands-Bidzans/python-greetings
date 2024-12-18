@@ -78,3 +78,4 @@ def runTests(String environment) {
     bat "docker run --network=host --rm ${params.dockerhub_username}/api-tests:latest run greetings greetings_${lowercaseEnv}"
 }
 
+
