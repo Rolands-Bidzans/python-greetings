@@ -77,3 +77,4 @@ def runTests(String environment) {
     pullDockerImage()
     bat "docker run --network=host --rm ${params.dockerhub_username}/api-tests:latest run greetings greetings_${lowercaseEnv}"
 }
+
